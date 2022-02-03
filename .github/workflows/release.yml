@@ -30,18 +30,21 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      - name: Generate builder values
-        id: values
-        run: |
-          echo "::set-output name=version::`echo ${GITHUB_REF##*/} | sed -e 's/^[vV ]*//'`"
-          echo "::set-output name=timestamp::`date +%FT%T%z`"
+      - name: Docker meta
+        id: meta
+        uses: docker/metadata-action@v3
+        with:
+          images: |
+            ghcr.io/serhioli/dummy-app
+          tags: |
+            type=semver,pattern={{version}}
+            type=semver,pattern={{major}}.{{minor}}
+            type=semver,pattern={{major}}
       - name: Build and push
         uses: docker/build-push-action@v2
         with:
           context: .
           file: Dockerfile
           push: true
-          tags: |
-            ghcr.io/serhioli/dummy-app-api:latest
-            ghcr.io/serhioli/dummy-app-api:${{ steps.values.outputs.version }}
-
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
