@@ -26,9 +26,9 @@ class DataController extends Controller
         ];
     }
 
-    public function actionCreate()
+    public function actionCreate(int $slowing_min = 1, int $slowing_max = 2)
     {
-        SlowingHelper::processSlowing();
+        usleep(random_int($slowing_min, $slowing_max));
 
         return [
             'created' => 'OK',
