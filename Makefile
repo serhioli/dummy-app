@@ -1,4 +1,4 @@
-.PHONY: up down build exec
+.PHONY: up down build build! exec
 
 up:
 	docker compose up -d

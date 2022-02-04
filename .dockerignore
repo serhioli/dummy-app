@@ -1,5 +1,6 @@
 /*
+!docker
 !src/**
-/src/composer.*
+/src/vendor
 /src/src/runtime/*
 /src/src/web/assets/*
