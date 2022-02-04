@@ -1,26 +1,31 @@
-FROM php:8.1-fpm-alpine
+FROM composer:2 as composer-image
 
-ENV APP_ENV="dev" \
-    APP_DEBUG="true" \
+FROM nginx/unit:1.26.1-php8.1
+
+ENV APP_ENV="prod" \
+    APP_DEBUG="false" \
     APP_SLOWING_ENABLED="false" \
     APP_SLOWING_MIN_MICROSECONDS="0" \
     APP_SLOWING_MAX_MICROSECONDS="0"
 
 RUN mv "$PHP_INI_DIR/php.ini-development" "$PHP_INI_DIR/php.ini"; \
-    apk add --no-cache \
+    apt-get update; \
+    apt-get --no-install-recommends --no-install-suggests -y install \
         bash \
         git \
         unzip \
-        curl; \
-    apk add --no-cache --virtual .build-deps $PHPIZE_DEPS; \
-    pecl install xdebug; \
+        curl \
+        $PHPIZE_DEPS; \
+    apt-get clean; \
+    rm -rf /var/lib/apt/lists/*; \
     docker-php-ext-install opcache; \
-    docker-php-ext-enable xdebug; \
-    docker-php-ext-enable opcache; \
-    apk del --no-network .build-deps
+    docker-php-ext-enable opcache
 
-COPY src /app
+COPY --chown=unit:unit ./src /app
+# Copy Composer
+COPY --from=composer-image /usr/bin/composer /usr/bin/composer
+RUN composer install -d /app --no-dev --no-progress --ansi -ao
 
-RUN chown -R www-data:www-data /app
+COPY ./docker/app/docker-entrypoint.d /docker-entrypoint.d
 
 WORKDIR /app

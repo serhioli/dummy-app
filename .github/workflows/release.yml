@@ -10,16 +10,6 @@ jobs:
     steps:
       - name: Check out code
         uses: actions/checkout@v2
-      - name: Setup PHP
-        uses: shivammathur/setup-php@v2
-        with:
-          coverage: "none"
-          ini-values: memory_limit=-1
-          php-version: "8.1"
-          tools: composer
-      - name: Install deps
-        run: |
-          composer install -d src --no-dev --no-progress --ansi -ao
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v1
       - name: Set up Docker Buildx
