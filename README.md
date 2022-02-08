@@ -39,14 +39,3 @@ Return random fields + applies slowing config
     }
 }
 ```
-
-### `POST /api/data?slowing_min=1&slowing_max=2`
-Imitates saving process.
-Slowing range can be passed in query params.
-Ignores global slowing configuration.
-##### Response
-```json
-{
-    "content": "OK"
-}
-```
