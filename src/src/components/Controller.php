@@ -2,6 +2,7 @@
 
 namespace serhioli\DummyApp\components;
 
+use serhioli\DummyApp\components\behaviors\SlowingBehavior;
 use yii\filters\auth\CompositeAuth;
 use yii\filters\ContentNegotiator;
 use yii\filters\RateLimiter;
@@ -14,20 +15,26 @@ class Controller extends \yii\rest\Controller
     {
         return [
             'contentNegotiator' => [
-                'class' => ContentNegotiator::class,
+                'class'   => ContentNegotiator::class,
                 'formats' => [
                     'application/json' => Response::FORMAT_JSON,
                 ],
             ],
-            'verbFilter' => [
-                'class' => VerbFilter::class,
+            'verbFilter'        => [
+                'class'   => VerbFilter::class,
                 'actions' => $this->verbs(),
             ],
-            'authenticator' => [
+            'authenticator'     => [
                 'class' => CompositeAuth::class,
             ],
-            'rateLimiter' => [
+            'rateLimiter'       => [
                 'class' => RateLimiter::class,
+            ],
+            'slowing'           => [
+                'class'     => SlowingBehavior::class,
+                'isEnabled' => \Yii::$app->params['slowing']['enabled'],
+                'minMs'     => \Yii::$app->params['slowing']['min'],
+                'maxMs'     => \Yii::$app->params['slowing']['max'],
             ],
         ];
     }

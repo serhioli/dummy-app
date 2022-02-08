@@ -8,7 +8,7 @@ final class SlowingHelper
 {
     public static function processSlowing(): void
     {
-        if (self::isSlowing()){
+        if (self::isSlowing()) {
             usleep(self::chooseSlowing());
         }
     }
@@ -29,6 +29,6 @@ final class SlowingHelper
             return 0;
         }
 
-        return random_int($min, $max);
+        return random_int($min, $max) * 1000;
     }
 }
