@@ -4,6 +4,10 @@ services:
   app_build:
     build:
       context: .
+    environment:
+      APP_SLOWING_ENABLED: true
+      APP_SLOWING_MIN_MICROSECONDS: 1000
+      APP_SLOWING_MAX_MICROSECONDS: 5000
     ports:
       - "9999:8080"
   app:
@@ -14,5 +18,8 @@ services:
       - ./src:/app
     environment:
       PHP_IDE_CONFIG: "serverName=Docker"
+      APP_SLOWING_ENABLED: true
+      APP_SLOWING_MIN_MICROSECONDS: 1000
+      APP_SLOWING_MAX_MICROSECONDS: 5000
     ports:
       - "8888:8080"
