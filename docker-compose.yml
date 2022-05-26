@@ -5,7 +5,6 @@ services:
     build:
       context: .
     volumes:
-      - ./docker/app/99-xdebug.ini:/usr/local/etc/php/conf.d/99-xdebug.ini:ro
       - ./docker/app/docker-entrypoint.d:/docker-entrypoint.d:ro
       - ./src:/app
     environment:
