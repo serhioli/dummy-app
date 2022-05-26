@@ -2,10 +2,11 @@ ports:
   - port: 8080
 tasks:
   - name: Dev server
-    before: cp .dist.env .env
+    before: |
+      cp .dist.env .env
+      docker compose build --quiet --pull --no-cache
     init: |
       composer install --quiet --working-dir=src
-      docker compose build --quiet --pull --no-cache
     command: |
       docker compose up -d
       docker compose logs -f
