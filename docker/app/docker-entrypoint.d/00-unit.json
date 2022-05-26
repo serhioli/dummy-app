@@ -19,7 +19,7 @@
         },
         {
             "action": {
-                "share": "/app/src/web$uri",
+                "share": "/app/web$uri",
                 "fallback": {
                     "pass": "applications/yii/index"
                 }
@@ -31,10 +31,10 @@
             "type": "php",
             "targets": {
                 "direct": {
-                    "root": "/app/src/web/"
+                    "root": "/app/web/"
                 },
                 "index": {
-                    "root": "/app/src/web/",
+                    "root": "/app/web/",
                     "script": "index.php"
                 }
             }

@@ -23,6 +23,7 @@ RUN mv "$PHP_INI_DIR/php.ini-development" "$PHP_INI_DIR/php.ini"  && \
         echo "xdebug.start_with_request=yes" >> /usr/local/etc/php/conf.d/99-xdebug.ini
 
 COPY --chown=unit:unit ./src /app
+COPY --from=composer-image ./app/vendor /app/vendor
 
 COPY ./docker/app/docker-entrypoint.d /docker-entrypoint.d
 
