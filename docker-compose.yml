@@ -1,17 +1,9 @@
 version: "3.8"
 
 services:
-  app_build:
+  app:
     build:
       context: .
-    environment:
-      APP_SLOWING_ENABLED: true
-      APP_SLOWING_MIN_MICROSECONDS: 1000
-      APP_SLOWING_MAX_MICROSECONDS: 5000
-    ports:
-      - "9999:8080"
-  app:
-    image: nginx/unit:1.26.1-php8.1
     volumes:
       - ./docker/app/99-xdebug.ini:/usr/local/etc/php/conf.d/99-xdebug.ini:ro
       - ./docker/app/docker-entrypoint.d:/docker-entrypoint.d:ro
@@ -22,4 +14,4 @@ services:
       APP_SLOWING_MIN_MICROSECONDS: 1000
       APP_SLOWING_MAX_MICROSECONDS: 5000
     ports:
-      - "8888:8080"
+      - "8080:8080"

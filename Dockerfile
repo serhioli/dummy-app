@@ -14,9 +14,13 @@ ENV APP_ENV="prod" \
     APP_SLOWING_MIN_MICROSECONDS="0" \
     APP_SLOWING_MAX_MICROSECONDS="0"
 
-RUN mv "$PHP_INI_DIR/php.ini-development" "$PHP_INI_DIR/php.ini"; \
-    install-php-extensions \
-        opcache
+RUN mv "$PHP_INI_DIR/php.ini-development" "$PHP_INI_DIR/php.ini"  && \
+        install-php-extensions \
+                opcache \
+                xdebug \
+        echo "xdebug.mode=debug" >> /usr/local/etc/php/conf.d/99-xdebug.ini && \
+        echo "xdebug.client_host=0.0.0.0" >> /usr/local/etc/php/conf.d/99-xdebug.ini && \
+        echo "xdebug.start_with_request=yes" >> /usr/local/etc/php/conf.d/99-xdebug.ini
 
 COPY --chown=unit:unit ./src /app
 

@@ -16,7 +16,7 @@ github:
     pullRequests: true
     pullRequestsFromForks: true
     addCheck: prevent-merge-on-error
-    addComment: false
+    addComment: true
     addBadge: true
 jetbrains:
   intellij:
