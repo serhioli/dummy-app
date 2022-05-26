@@ -1,0 +1,24 @@
+ports:
+  - port: 8080
+tasks:
+  - name: Dev server
+    before: cp .dist.env .env
+    init: |
+      docker compose build --quiet --pull --no-cache
+      composer install --quiet --working-dir=src
+    command: |
+      docker compose up -d
+      docker compose logs -f
+github:
+  prebuilds:
+    master: true
+    branches: true
+    pullRequests: true
+    pullRequestsFromForks: true
+    addCheck: prevent-merge-on-error
+    addComment: false
+    addBadge: true
+jetbrains:
+  intellij:
+    prebuilds:
+      version: stable
