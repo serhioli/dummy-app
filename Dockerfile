@@ -1,6 +1,12 @@
 FROM composer:2 as composer-image
 
+COPY composer.lock composer.json ./
+
+RUN composer install --no-dev --no-progress --ansi -ao
+
 FROM nginx/unit:1.26.1-php8.1
+
+COPY --from=mlocati/php-extension-installer /usr/bin/install-php-extensions /usr/local/bin/
 
 ENV APP_ENV="prod" \
     APP_DEBUG="false" \
@@ -8,23 +14,16 @@ ENV APP_ENV="prod" \
     APP_SLOWING_MIN_MICROSECONDS="0" \
     APP_SLOWING_MAX_MICROSECONDS="0"
 
-RUN mv "$PHP_INI_DIR/php.ini-development" "$PHP_INI_DIR/php.ini"; \
-    apt-get update; \
-    apt-get --no-install-recommends --no-install-suggests -y install \
-        bash \
-        git \
-        unzip \
-        curl \
-        $PHPIZE_DEPS; \
-    apt-get clean; \
-    rm -rf /var/lib/apt/lists/*; \
-    docker-php-ext-install opcache; \
-    docker-php-ext-enable opcache
+RUN mv "$PHP_INI_DIR/php.ini-development" "$PHP_INI_DIR/php.ini"  && \
+        install-php-extensions \
+                opcache \
+                xdebug && \
+        echo "xdebug.mode=debug" >> /usr/local/etc/php/conf.d/99-xdebug.ini && \
+        echo "xdebug.client_host=0.0.0.0" >> /usr/local/etc/php/conf.d/99-xdebug.ini && \
+        echo "xdebug.start_with_request=yes" >> /usr/local/etc/php/conf.d/99-xdebug.ini
 
 COPY --chown=unit:unit ./src /app
-# Copy Composer
-COPY --from=composer-image /usr/bin/composer /usr/bin/composer
-RUN composer install -d /app --no-dev --no-progress --ansi -ao
+COPY --from=composer-image ./app/src/vendor /app/vendor
 
 COPY ./docker/app/docker-entrypoint.d /docker-entrypoint.d
 

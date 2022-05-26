@@ -1,4 +1,5 @@
 # Readme
+[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#serhioli/dummy-app)
 ## Sample service definition
 ```yaml
 services:

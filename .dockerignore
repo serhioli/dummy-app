@@ -1,6 +1,5 @@
-/*
+*
 !docker
-!src/**
-/src/vendor
-/src/src/runtime/*
-/src/src/web/assets/*
+!src
+!composer.json
+!composer.lock
