@@ -15,7 +15,7 @@ class DataController extends Controller
                 'class'     => DataAction::class,
                 'formatter' => Yii::$app->formatter,
                 'params'    => Yii::$app->params,
-            ]
+            ],
         ];
     }
 }
