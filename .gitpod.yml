@@ -1,3 +1,4 @@
+image: ghcr.io/serhioli/gitpod-workspace
 ports:
   - port: 8080
 tasks:
