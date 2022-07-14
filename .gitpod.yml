@@ -1,4 +1,4 @@
-image: ghcr.io/serhioli/gitpod-workspace
+image: ghcr.io/serhioli/gitpod-workspace:latest
 ports:
   - port: 8080
 tasks:
@@ -13,12 +13,8 @@ tasks:
       docker compose logs -f
 github:
   prebuilds:
-    master: true
-    branches: true
     pullRequests: true
-    pullRequestsFromForks: true
     addCheck: prevent-merge-on-error
-    addComment: false
     addBadge: true
 jetbrains:
   intellij:
