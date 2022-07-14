@@ -18,7 +18,7 @@ class SlowingBehavior extends Behavior
     public function events()
     {
         return [
-            Controller::EVENT_BEFORE_ACTION => 'processSlowing'
+            Controller::EVENT_BEFORE_ACTION => 'processSlowing',
         ];
     }
 
