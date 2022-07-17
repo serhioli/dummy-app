@@ -11,8 +11,7 @@
     ],
     "config": {
         "allow-plugins": true,
-        "sort-packages": true,
-        "vendor-dir": "src/vendor"
+        "sort-packages": true
     },
     "require": {
         "php": ">=8.1",

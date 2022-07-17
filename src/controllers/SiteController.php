@@ -10,7 +10,7 @@ class SiteController extends Controller
     {
         return [
             'error' => [
-                'class' => 'yii\web\ErrorAction',
+                'class' => \yii\web\ErrorAction::class,
             ],
         ];
     }

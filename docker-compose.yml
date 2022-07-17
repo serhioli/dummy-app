@@ -5,8 +5,8 @@ services:
     build:
       context: .
     volumes:
-      - ./docker/app/docker-entrypoint.d:/docker-entrypoint.d:ro
-      - ./src:/app
+      - ./src:/app/src
+      - ./vendor:/app/vendor
     environment:
       PHP_IDE_CONFIG: "serverName=Docker"
       APP_SLOWING_ENABLED: true
