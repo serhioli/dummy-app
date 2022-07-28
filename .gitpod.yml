@@ -1,21 +1,6 @@
 image: ghcr.io/serhioli/gitpod-workspace:latest
 ports:
   - port: 8080
-tasks:
-  - name: Dev server
-    before: |
-      cp .dist.env .env
-      docker compose build --quiet --pull --no-cache
-    init: |
-      composer install --quiet --working-dir=src
-    command: |
-      docker compose up -d
-      docker compose logs -f
-github:
-  prebuilds:
-    pullRequests: true
-    addCheck: prevent-merge-on-error
-    addBadge: true
 jetbrains:
   intellij:
     prebuilds:

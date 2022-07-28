@@ -1,10 +1,16 @@
-FROM composer:2 as composer-image
+FROM php:8.1-fpm-alpine as composer-image
 
-COPY composer.lock composer.json ./
+RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" && \
+    php composer-setup.php --version=2.3.10 --install-dir=/usr/bin --filename=composer && \
+    php -r "unlink('composer-setup.php');"
 
+WORKDIR /app
+COPY composer.lock composer.json /app/
 RUN composer install --no-dev --no-progress --ansi -ao
 
-FROM nginx/unit:1.26.1-php8.1
+FROM caddy:2-alpine as caddy
+
+FROM php:8.1-fpm-alpine
 
 COPY --from=mlocati/php-extension-installer /usr/bin/install-php-extensions /usr/local/bin/
 
@@ -22,9 +28,14 @@ RUN mv "$PHP_INI_DIR/php.ini-development" "$PHP_INI_DIR/php.ini"  && \
         echo "xdebug.client_host=0.0.0.0" >> /usr/local/etc/php/conf.d/99-xdebug.ini && \
         echo "xdebug.start_with_request=yes" >> /usr/local/etc/php/conf.d/99-xdebug.ini
 
-COPY --chown=unit:unit ./src /app
-COPY --from=composer-image ./app/src/vendor /app/vendor
+COPY --chown=www-data:www-data ./src /app/src
+COPY --chown=www-data:www-data --from=composer-image ./app/vendor /app/vendor
 
-COPY ./docker/app/docker-entrypoint.d /docker-entrypoint.d
+
+EXPOSE 80
+EXPOSE 443
+EXPOSE 2019
 
 WORKDIR /app
+
+CMD ["caddy", "run", "--config", "/app/Caddyfile", "--adapter", "caddyfile"]
